@@ -1,8 +1,10 @@
 package com.example.firstaidguide
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.database.FirebaseDatabase
 
 class SetupAccountActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -213,7 +216,32 @@ fun SetupAccountActivityScreen() {
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { /* Handle Login */ },
+            onClick = {
+                when {
+                    email.isEmpty() -> {
+                        Toast.makeText(context, " Please Enter Mail", Toast.LENGTH_SHORT).show()
+                    }
+                    fullName.isEmpty() -> {
+                        Toast.makeText(context, " Please Enter Name", Toast.LENGTH_SHORT).show()
+                    }
+
+                    password.isEmpty() -> {
+                        Toast.makeText(context, " Please Enter Password", Toast.LENGTH_SHORT).show()
+                    }
+
+
+                    else -> {
+                        val patientDetails = PatientDetails(
+                            fullName,
+                            email,
+                            "",
+                            password
+                        )
+                        setUpPatientAccount(patientDetails,context);
+                    }
+
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
@@ -244,3 +272,39 @@ fun SetupAccountActivityScreen() {
         }
     }
 }
+
+fun setUpPatientAccount(patientDetails: PatientDetails, context: Context) {
+
+    val firebaseDatabase = FirebaseDatabase.getInstance()
+    val databaseReference = firebaseDatabase.getReference("PatientData")
+
+    databaseReference.child(patientDetails.emailid.replace(".", ","))
+        .setValue(patientDetails)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(context, "You Registered Successfully", Toast.LENGTH_SHORT)
+                    .show()
+
+            } else {
+                Toast.makeText(
+                    context,
+                    "Registration Failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        .addOnFailureListener { _ ->
+            Toast.makeText(
+                context,
+                "Something went wrong",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+}
+
+data class PatientDetails(
+    var name : String = "",
+    var emailid : String = "",
+    var age : String = "",
+    var password: String = ""
+)
