@@ -13,6 +13,9 @@
         android:theme="@style/Theme.FirstAidGuide"
         tools:targetApi="31">
         <activity
+            android:name=".FirstAidDashActivity"
+            android:exported="false" />
+        <activity
             android:name=".SetupAccountActivity"
             android:exported="false" />
         <activity
