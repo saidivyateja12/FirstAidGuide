@@ -58,8 +58,18 @@ fun IntroScreen() {
         IntroScreenD()
     } else {
 
-        context.startActivity(Intent(context, AccountAccessActivity::class.java))
-        context.finish()
+        val currentStatus = FirstAidData.readLS(context)
+
+        if(currentStatus)
+        {
+            context.startActivity(Intent(context, FirstAidDashActivity::class.java))
+            context.finish()
+        }else{
+            context.startActivity(Intent(context, AccountAccessActivity::class.java))
+            context.finish()
+        }
+
+
 
     }
 }

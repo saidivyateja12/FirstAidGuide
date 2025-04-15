@@ -227,6 +227,11 @@ fun patientAccess(patientDetails: PatientDetails, context: Context) {
             if (dbData != null) {
                 if (dbData.password == patientDetails.password) {
 
+
+                    FirstAidData.writeLS(context, true)
+                    FirstAidData.writeMail(context, dbData.emailid)
+                    FirstAidData.writeUserName(context, dbData.name)
+
                     context.startActivity(Intent(context, FirstAidDashActivity::class.java))
 
                     Toast.makeText(context, "Login Sucessfully", Toast.LENGTH_SHORT).show()

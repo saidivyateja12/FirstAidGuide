@@ -2,7 +2,6 @@ package com.example.firstaidguide
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -207,26 +206,50 @@ fun FirstAidDashboard() {
 
 
         }
-        
+
         Spacer(modifier = Modifier.height(12.dp))
 
 
-        FirstAidHomeItem("Search\nGuideline",R.drawable.first_aid,"Search guidelines for different symptoms","Search Guidelines")
+        FirstAidHomeItem(
+            "Search\nGuideline",
+            R.drawable.first_aid,
+            "Search guidelines for different symptoms",
+            "Search Guidelines"
+        )
 
-        FirstAidHomeItem("First Aid\nGuide",R.drawable.first_aid,"See the guidelines for various emergencies","View Guidelines")
+        FirstAidHomeItem(
+            "First Aid\nGuide",
+            R.drawable.first_aid,
+            "See the guidelines for various emergencies",
+            "View Guidelines"
+        )
 
-        FirstAidHomeItem("Emergency\nContacts",R.drawable.first_aid,"See the guidelines for various emergencies","View Contacts")
+        FirstAidHomeItem(
+            "Emergency\nContacts",
+            R.drawable.first_aid,
+            "See the guidelines for various emergencies",
+            "View Contacts"
+        )
 
-        FirstAidHomeItem("Saved\nGuidelines",R.drawable.first_aid,"See the guidelines for various emergencies","View Bookamarks")
+        FirstAidHomeItem(
+            "Saved\nGuidelines",
+            R.drawable.first_aid,
+            "See the guidelines for various emergencies",
+            "View Bookamarks"
+        )
 
-        FirstAidHomeItem("My Medical\nInfo",R.drawable.first_aid,"See the guidelines for various emergencies","View Info")
+        FirstAidHomeItem(
+            "My Medical\nInfo",
+            R.drawable.first_aid,
+            "See the guidelines for various emergencies",
+            "View Info"
+        )
 
     }
 }
 
 @Composable
-fun FirstAidHomeItem(title: String,imageRes: Int,caption: String,buttonText: String)
-{
+fun FirstAidHomeItem(title: String, imageRes: Int, caption: String, buttonText: String) {
     val context = LocalContext.current
 
     Row(
@@ -292,10 +315,25 @@ fun FirstAidHomeItem(title: String,imageRes: Int,caption: String,buttonText: Str
                 modifier = Modifier
                     .align(Alignment.End)
                     .clickable {
-                        when(imageRes)
-                        {
-                            R.drawable.first_aid -> {
-                                context.startActivity(Intent(context, SearchGuidelinesActivity::class.java))
+                        when (buttonText) {
+                             "Search Guidelines" -> {
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        SearchGuidelinesActivity::class.java
+                                    )
+                                )
+                            }
+
+                             "View Guidelines" -> {
+
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        ViewGuidelinesActivity::class.java
+                                    )
+                                )
+
                             }
                         }
                     }
