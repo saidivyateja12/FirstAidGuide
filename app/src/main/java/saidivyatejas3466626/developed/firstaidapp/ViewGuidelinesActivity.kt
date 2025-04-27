@@ -1,5 +1,6 @@
-package com.example.firstaidguide
+package saidivyatejas3466626.developed.firstaidapp
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +52,8 @@ class ViewGuidelinesActivity : ComponentActivity() {
 @Composable
 fun FirstAidHomeScreen() {
     var searchQuery by remember { mutableStateOf("") }
+
+    val context = LocalContext.current as Activity
 
     val categories = listOf("Bleeding", "Breathing Issues", "Fractures")
     val emergencyConditions = listOf(
@@ -81,6 +85,9 @@ fun FirstAidHomeScreen() {
 
             Image(
                 modifier = Modifier
+                    .clickable {
+                        context.finish()
+                    }
                     .size(36.dp),
                 painter = painterResource(id = R.drawable.back),
                 contentDescription = "Back"

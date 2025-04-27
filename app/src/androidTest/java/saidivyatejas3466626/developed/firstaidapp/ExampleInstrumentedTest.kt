@@ -1,4 +1,4 @@
-package com.example.firstaidguide
+package saidivyatejas3466626.developed.firstaidapp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

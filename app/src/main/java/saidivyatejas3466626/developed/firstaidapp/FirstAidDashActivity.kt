@@ -1,5 +1,6 @@
-package com.example.firstaidguide
+package saidivyatejas3466626.developed.firstaidapp
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +9,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,15 +18,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -45,125 +45,6 @@ class FirstAidDashActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun FirstAidDashScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-    ) {
-        Spacer(modifier = Modifier.height(6.dp))
-        Text(
-            text = "Welcome to First Aid Guide",
-            style = MaterialTheme.typography.headlineSmall,
-            color = Color(0xFF5D3FD3),
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(horizontal = 12.dp)
-        )
-        Text(
-            text = "Hi, User !",
-            style = MaterialTheme.typography.headlineMedium,
-            color = Color(0xFF5D3FD3),
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(horizontal = 12.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // First row of cards
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            CardWithImageAndText(imageRes = R.drawable.first_aid, title = "Guideline", 1)
-            CardWithImageAndText(
-                imageRes = R.drawable.first_aid,
-                title = "Emergency Contacts",
-                2
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            CardWithImageAndText(imageRes = R.drawable.first_aid, title = "Manage Medical Info", 3)
-            CardWithImageAndText(
-                imageRes = R.drawable.first_aid,
-                title = "Delete Info",
-                4
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            CardWithImageAndText(
-                imageRes = R.drawable.first_aid,
-                title = "Summary",
-                6
-            )
-            CardWithImageAndText(imageRes = R.drawable.first_aid, title = "Logout", 5)
-        }
-    }
-}
-
-
-@Composable
-fun CardWithImageAndText(
-    imageRes: Int,
-    title: String,
-    cardId: Int
-) {
-
-    Card(
-        modifier = Modifier
-            .width(150.dp)
-            .height(150.dp)
-            .clickable {
-            },
-        shape = RoundedCornerShape(16.dp)
-    )
-
-    {
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = imageRes),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(64.dp)
-                    .width(64.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
@@ -173,8 +54,13 @@ fun FirstAidDashboardP() {
 
 @Composable
 fun FirstAidDashboard() {
+
+    val context = LocalContext.current as Activity
+
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
 
         Row(
@@ -204,18 +90,34 @@ fun FirstAidDashboard() {
                 )
             )
 
+            Spacer(modifier = Modifier.weight(1f))
+
+            Image(
+                modifier = Modifier
+                    .clickable {
+                        context.startActivity(
+                            Intent(
+                                context,
+                                PatientProfileActivity::class.java
+                            )
+                        )
+                    }
+                    .size(36.dp),
+                painter = painterResource(id = R.drawable.baseline_account_box_36),
+                contentDescription = "Account"
+            )
 
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
-
         FirstAidHomeItem(
-            "Search\nGuideline",
+            "Symptom\nChecker",
             R.drawable.first_aid,
-            "Search guidelines for different symptoms",
-            "Search Guidelines"
+            "Search possible illness by the symptoms",
+            "Check Now"
         )
+
 
         FirstAidHomeItem(
             "First Aid\nGuide",
@@ -227,22 +129,23 @@ fun FirstAidDashboard() {
         FirstAidHomeItem(
             "Emergency\nContacts",
             R.drawable.first_aid,
-            "See the guidelines for various emergencies",
+            "See the list of contacts for emergencies",
             "View Contacts"
         )
 
+
         FirstAidHomeItem(
-            "Saved\nGuidelines",
+            "Locate\nHospitals",
             R.drawable.first_aid,
-            "See the guidelines for various emergencies",
-            "View Bookamarks"
+            "See nearby hospital  on the maps",
+            "View Hospitals"
         )
 
         FirstAidHomeItem(
-            "My Medical\nInfo",
+            "Having\nqueries?",
             R.drawable.first_aid,
-            "See the guidelines for various emergencies",
-            "View Info"
+            "Get in touch with us in case of queries",
+            "Contact Us"
         )
 
     }
@@ -316,7 +219,17 @@ fun FirstAidHomeItem(title: String, imageRes: Int, caption: String, buttonText: 
                     .align(Alignment.End)
                     .clickable {
                         when (buttonText) {
-                             "Search Guidelines" -> {
+
+                            "Check Now" -> {
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        SymptomCheckerActivity::class.java
+                                    )
+                                )
+                            }
+
+                            "Search Guidelines" -> {
                                 context.startActivity(
                                     Intent(
                                         context,
@@ -325,15 +238,53 @@ fun FirstAidHomeItem(title: String, imageRes: Int, caption: String, buttonText: 
                                 )
                             }
 
-                             "View Guidelines" -> {
+                            "View Guidelines" -> {
 
                                 context.startActivity(
                                     Intent(
                                         context,
-                                        ViewGuidelinesActivity::class.java
+                                        FirstAidGuidelinesActivity::class.java
                                     )
                                 )
 
+                            }
+
+                            "View Contacts" -> {
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        EmergenciesContactsActivity::class.java
+                                    )
+                                )
+                            }
+
+                            "View Info" -> {
+
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        ViewHospitalsLocationActivity::class.java
+                                    )
+                                )
+
+                            }
+
+                            "Contact Us" -> {
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        ContactUsActivity::class.java
+                                    )
+                                )
+                            }
+
+                            "View Hospitals" -> {
+                                context.startActivity(
+                                    Intent(
+                                        context,
+                                        ViewHospitalsLocationActivity::class.java
+                                    )
+                                )
                             }
                         }
                     }

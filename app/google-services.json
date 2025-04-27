@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "331996519184",
+    "firebase_url": "https://firstaidguide-f3ee5-default-rtdb.firebaseio.com",
     "project_id": "firstaidguide-f3ee5",
     "storage_bucket": "firstaidguide-f3ee5.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:331996519184:android:f873b1f4c867eec439e395",
+        "mobilesdk_app_id": "1:331996519184:android:3635fb5d1343121d39e395",
         "android_client_info": {
-          "package_name": "com.example.firstaidguide"
+          "package_name": "saidivyatejas3466626.developed.firstaidapp"
         }
       },
       "oauth_client": [],

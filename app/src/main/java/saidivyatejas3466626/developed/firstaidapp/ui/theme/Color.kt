@@ -1,4 +1,4 @@
-package com.example.firstaidguide.ui.theme
+package saidivyatejas3466626.developed.firstaidapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
