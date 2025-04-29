@@ -57,64 +57,7 @@ fun IntroScreen(fragmentActivity: FragmentActivity) {
     if (showSplash) {
         IntroScreenD()
     } else {
-
-        if (FirstAidPreferences.getLoginStatus(context)) {
-            val biometricManager = BiometricManager.from(fragmentActivity)
-            if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
-                val executor = ContextCompat.getMainExecutor(fragmentActivity)
-                val biometricPrompt =
-                    BiometricPrompt(
-                        fragmentActivity,
-                        executor,
-                        object : BiometricPrompt.AuthenticationCallback() {
-                            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                                super.onAuthenticationSucceeded(result)
-                                context.startActivity(
-                                    Intent(
-                                        context,
-                                        FirstAidDashActivity::class.java
-                                    )
-                                )
-                            }
-
-                            override fun onAuthenticationError(
-                                errorCode: Int,
-                                errString: CharSequence
-                            ) {
-                                super.onAuthenticationError(errorCode, errString)
-                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG)
-                                    .show()
-                            }
-
-                            override fun onAuthenticationFailed() {
-                                super.onAuthenticationFailed()
-                                Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG)
-                                    .show()
-                            }
-                        })
-
-                val promptInfo = BiometricPrompt.PromptInfo.Builder()
-                    .setTitle("FingerPrint Verification")
-                    .setSubtitle("Place your finger to continue")
-                    .setNegativeButtonText("Close")
-                    .build()
-
-                biometricPrompt.authenticate(promptInfo)
-            } else {
-                Toast.makeText(
-                    fragmentActivity,
-                    "This device doesn't support fingerprint",
-                    Toast.LENGTH_LONG
-                ).show()
-                context.startActivity(Intent(context, FirstAidDashActivity::class.java))
-
-            }
-        } else {
-            context.startActivity(Intent(context, AccountAccessActivity::class.java))
-            context.finish()
-        }
-
-
+        checkFingerPrint(fragmentActivity, context)
     }
 }
 
@@ -160,5 +103,64 @@ fun IntroScreenD() {
                 .align(Alignment.CenterHorizontally)
                 .padding(horizontal = 12.dp)
         )
+    }
+}
+
+fun checkFingerPrint(fragmentActivity: FragmentActivity, context: Activity) {
+    if (FirstAidPreferences.getLoginStatus(context)) {
+        val patientPrint = BiometricManager.from(fragmentActivity)
+        if (patientPrint.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG) == BiometricManager.BIOMETRIC_SUCCESS) {
+            val executor = ContextCompat.getMainExecutor(fragmentActivity)
+            val patientPrompt =
+                BiometricPrompt(
+                    fragmentActivity,
+                    executor,
+                    object : BiometricPrompt.AuthenticationCallback() {
+                        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                            super.onAuthenticationSucceeded(result)
+                            context.startActivity(
+                                Intent(
+                                    context,
+                                    FirstAidDashActivity::class.java
+                                )
+                            )
+                            context.finish()
+                        }
+
+                        override fun onAuthenticationError(
+                            errorCode: Int,
+                            errString: CharSequence
+                        ) {
+                            super.onAuthenticationError(errorCode, errString)
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG)
+                                .show()
+                        }
+
+                        override fun onAuthenticationFailed() {
+                            super.onAuthenticationFailed()
+                            Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    })
+
+            val promptInfo = BiometricPrompt.PromptInfo.Builder()
+                .setTitle("FingerPrint Verification")
+                .setSubtitle("Place your finger to continue")
+                .setNegativeButtonText("Close")
+                .build()
+
+            patientPrompt.authenticate(promptInfo)
+        } else {
+            Toast.makeText(
+                fragmentActivity,
+                "No Finger Print Support Found",
+                Toast.LENGTH_LONG
+            ).show()
+            context.startActivity(Intent(context, FirstAidDashActivity::class.java))
+            context.finish()
+        }
+    } else {
+        context.startActivity(Intent(context, AccountAccessActivity::class.java))
+        context.finish()
     }
 }
